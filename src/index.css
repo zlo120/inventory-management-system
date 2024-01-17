@@ -11,3 +11,55 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.main-layout {
+  display: flex;
+}
+
+.custom-side-nav {
+  flex: 0 0 auto;
+  min-width: 15vw;
+  max-width: 15vw;
+  overflow: hidden;
+}
+
+.outlet {
+  padding: .5%;
+  flex: 1;
+
+}
+
+.nav-header {
+  text-align: center;
+  color: rgb(0, 152, 229);
+}
+
+.badge.danger {
+  background-color: rgb(251, 57, 57);
+  color: white;
+
+  min-height: 2.5vh;
+  min-width: 2.5vh;
+  border-radius: 5vh;
+
+  /* Center the text horizontally and vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsg-container {
+  min-height: 80vh;
+  margin-right: 15vw;
+}
+
+.grid-notes {
+  min-width: 0vw;
+}
+
+.loader {
+  /* Center the text horizontally and vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
