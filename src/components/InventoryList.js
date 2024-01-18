@@ -70,6 +70,7 @@ const InventoryList = (data) => {
   }
 
   const handleSubmit = () => {
+    console.log("handling search!!")
     if (serialInput === null) return;
 
     if (inputType === "Serial/Imei"){
@@ -98,7 +99,7 @@ const InventoryList = (data) => {
   useEffect(() => {
     ApiGetAllData()
       .then(res => res.json())
-      .then(res => setRowData(res))
+      .then(res => setRowData(res))      
   }, [])
   
   return (
@@ -126,7 +127,7 @@ const InventoryList = (data) => {
               Date
             </option>
           </Input>
-          <Button color='primary' onClick={handleSubmit} className='submit-btn'>Submit</Button>
+          <Button color='primary' onClick={handleSubmit} className='submit-btn'>Search</Button>
           <Button color='secondary' onClick={reset} className='reset-btn'><GrPowerReset /></Button>
       </div>
       

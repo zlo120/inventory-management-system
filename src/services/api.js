@@ -6,8 +6,6 @@ const ApiSendInventoryList = (data) => {
     let body = {
         "InventoryItems": data
     }
-
-    console.log(data);
     
     return fetch('https://localhost:7110/api/InventoryItem', {
         method: "POST",
@@ -18,6 +16,30 @@ const ApiSendInventoryList = (data) => {
         body: JSON.stringify(body)
     });
 };
+
+const ApiUpdateInventoryList = (data) => {
+
+    data.map(entry => {        
+        const [day, month, year] = entry.date.split('/');
+        entry.date = `${year}-${month}-${day}`;
+        return entry;
+    })
+
+    let body = {
+        "inventoryItems": data
+    }
+
+    console.log(body);
+    
+    return fetch('https://localhost:7110/api/InventoryItem/UpdateDate', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+}
 
 const ApiGetAllDates = () => {
     return fetch('https://localhost:7110/api/InventoryItem/GetAllDates')
@@ -42,4 +64,5 @@ export {
     ApiGetAllByName,
     ApiGetAllByDate,
     ApiGetAllBySerial,
+    ApiUpdateInventoryList,
 }

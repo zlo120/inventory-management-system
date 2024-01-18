@@ -1,15 +1,50 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { ApiGetAllByDate } from "../../services/api";
+import { ApiGetAllByDate, ApiUpdateInventoryList } from "../../services/api";
 import { Blocks } from 'react-loader-spinner';
-import { Button, Input } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { DynamicDataSheetGrid, textColumn, keyColumn, dateColumn, intColumn, checkboxColumn } from "react-datasheet-grid";
 import 'react-datasheet-grid/dist/style.css'
 import ExcelExport from "../../services/excelexport";
+import FormatData from "../../utils/FormatData";
+import ValidateData from "../../utils/ValidateData";
 
-const DateSheet = ({dateString}) => {
+const DateSheet = ({dateString}) => {  
+    const [insertSuccessful, setInsertSuccessful] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [sendingLoading, setSendingLoading] = useState(false);
+    const toggle = () => {
+      if (!isLoading) setModal(!modal)
+    }
+
+    const successToggle = () => {
+      setBackUpData(spreadSheetData);
+      if (sendingLoading) setSendingLoading(false);
+      if (insertSuccessful) setInsertSuccessful(false);
+
+      setSpreadSheetData(
+        spreadSheetData.map(entry => {
+          const [year, month, day] = entry.date.split('-');
+          const formattedDateString = `${day}/${month}/${year}`;
+          entry.date = formattedDateString
+          return entry;
+        })
+      )
+
+      setDisabledEditing(true);
+      setModal(!modal)
+    }
+
+    const invalidDateToggle = () => {
+      setSendingLoading(false);
+      setInsertSuccessful(false);
+      setInvalidDate(false);
+      setModal(!modal);
+    }
+
     const [date, setDate] = useState(null);
     const [validDate, setValidDate] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [invalidDate, setInvalidDate] = useState(false);
     const [disabledEditing, setDisabledEditing] = useState(true);
     
     const [id, setId] = useState(0);
@@ -109,13 +144,43 @@ const DateSheet = ({dateString}) => {
 
     const toggleEdit = () => {
       if (disabledEditing) {
-        setBackUpData(spreadSheetData);
         setDisabledEditing(false);
       }
       else {        
         setSpreadSheetData(backupData);
         setDisabledEditing(true)
       }
+    }
+
+    const sendData = () => {
+      setSendingLoading(true);
+
+      for(let i = 0; i < spreadSheetData.length; i++) {
+        if (!isValidDate(spreadSheetData[i].date)) {
+          setInvalidDate(true);
+          return;
+        }
+      }
+  
+      const formattedData = FormatData(spreadSheetData);
+  
+      if (formattedData.length == 0) {
+        return setSendingLoading(false);
+      }
+  
+      if (!ValidateData(spreadSheetData)) {
+        return setSendingLoading(false);
+      }
+  
+      ApiUpdateInventoryList(formattedData)
+        .then(res => res.json())
+        .then(res => {
+          console.log(`Response: ${JSON.stringify(res)}`);
+          if (res === "Successful!") {
+            setSendingLoading(false);
+            setInsertSuccessful(true);
+          }
+        });
     }
     
     useEffect(() => {
@@ -129,6 +194,7 @@ const DateSheet = ({dateString}) => {
             .then(res => {
                 setIsLoading(false);
                 setSpreadSheetData(res)
+                setBackUpData(res)
             });
     }, []);
 
@@ -167,7 +233,7 @@ const DateSheet = ({dateString}) => {
                         </Button>
                       ) : (
                         <>
-                          <Button color="primary" style={{marginTop: "1vh", marginLeft: "1vh"}}>
+                          <Button color="primary" onClick={toggle} style={{marginTop: "1vh", marginLeft: "1vh"}}>
                               Commit Edit
                           </Button>
 
@@ -176,11 +242,90 @@ const DateSheet = ({dateString}) => {
                           </Button>
                         </> 
                       )
-                    }
-
-                    
+                    }                    
                 </>
             }
+
+          <Modal
+            isOpen={modal}
+            toggle={toggle}
+            backdrop={'static'}
+            keyboard={true}
+            centered={true}
+          >
+            <ModalHeader>Confirm Update</ModalHeader>
+            <ModalBody>
+              {
+                invalidDate ? (
+                  <p>A date you have entered is invalid...</p>
+                )
+                : sendingLoading ? (
+                  <>
+                    <p style={{textAlign:"center"}}>Please wait while it is being entered</p>
+                    
+                    <div className="loader">
+                      <Blocks
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        ariaLabel="blocks-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="blocks-wrapper"
+                        visible={true}
+                      />
+                    </div>
+                  </>
+                )
+                : insertSuccessful ? ( 
+                  <>
+                    <p style={{textAlign:"center"}}>Your data has been successfully updated!</p>
+                  </> 
+                )
+                : 
+                (
+                  <p>Are you ready to update this data in the database?</p>
+                )
+              }
+            </ModalBody>
+            <ModalFooter>
+              {
+                invalidDate ? (
+                  <>
+                    <Button color="primary" onClick={invalidDateToggle}>
+                      Okay
+                    </Button>
+                  </>
+                )
+                : insertSuccessful ? (
+                  <>
+                    <Button color="primary" onClick={successToggle}>
+                      Done
+                    </Button>
+                  </>
+                )
+                : !sendingLoading ? (
+                <>
+                  <Button color="primary" onClick={sendData}>
+                    Enter Updated Data
+                  </Button>
+                  <Button color="secondary" onClick={toggle}>
+                    Cancel
+                  </Button>
+                </>
+                )
+                :
+                <>
+                  <Button color="primary" disabled>
+                  Enter Data
+                </Button>
+                <Button color="secondary" disabled>
+                  Cancel
+                </Button>
+                </>
+              }
+            </ModalFooter>
+          </Modal>
+
         </>
     )
 }

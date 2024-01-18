@@ -12,7 +12,6 @@ const Add = () => {
   const [insertSuccessful, setInsertSuccessful] = useState(false);
 
   const [modal, setModal] = useState(false);
-  const [keyboard, setKeyboard] = useState(true);
   const toggle = () => {
     if (!isLoading) setModal(!modal)
   }
@@ -105,7 +104,7 @@ const Add = () => {
   const createRow = useCallback(() => ({ id: genId() }), [])
 
   const sendData = () => {
-    setLoading(true);    
+    setLoading(true);
 
     const formattedData = FormatData(data);
 
