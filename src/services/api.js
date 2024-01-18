@@ -1,3 +1,7 @@
+const ApiGetAllData = () => {
+    return fetch("https://localhost:7110/api/InventoryItem")
+}
+
 const ApiSendInventoryList = (data) => {
     let body = {
         "InventoryItems": data
@@ -19,12 +23,23 @@ const ApiGetAllDates = () => {
     return fetch('https://localhost:7110/api/InventoryItem/GetAllDates')
 }
 
-const ApiGetInventoryByDate = (date) => {
-    return fetch(`https://localhost:7110/api/InventoryItem/GetInventoryByDate?date=${date}`)
+const ApiGetAllByDate = (date) => {
+    return fetch(`https://localhost:7110/api/InventoryItem?date=${date}`)
+}
+
+const ApiGetAllBySerial = (serial) => {
+    return fetch(`https://localhost:7110/api/InventoryItem?serial=${serial}`)
+}
+
+const ApiGetAllByName = (name) => {
+    return fetch(`https://localhost:7110/api/InventoryItem?name=${name}`)
 }
 
 export {
     ApiSendInventoryList,
     ApiGetAllDates,
-    ApiGetInventoryByDate,
+    ApiGetAllData,
+    ApiGetAllByName,
+    ApiGetAllByDate,
+    ApiGetAllBySerial,
 }

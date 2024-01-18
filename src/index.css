@@ -63,3 +63,40 @@ code {
   align-items: center;
   justify-content: center;
 }
+
+.search-sheets {
+  max-width: 10vw;
+  max-height: 4vh;
+  margin: 1vh 0 1vh 0;
+}
+
+.inventory-search {
+  width: 20vw;
+  margin: 0 .5vw 0 0;
+}
+
+#SearchTypeSelector {
+  max-width: 10vw;
+}
+
+.main-search {
+  display: flex;
+  margin-bottom: 1vh;
+}
+
+#datetimepicker {
+  max-width: 20vw;
+  margin: 0 .5vw 0 0;
+}
+
+.submit-btn {
+  min-width: 5vw;
+  margin: 0 .5vw 0 .5vw;
+}
+
+.reset-btn {
+  /* Center the text horizontally and vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

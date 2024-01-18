@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { ApiGetInventoryByDate } from "../../services/api";
+import { ApiGetAllByDate } from "../../services/api";
 import { Blocks } from 'react-loader-spinner';
-import { Button } from 'reactstrap';
+import { Button, Input } from 'reactstrap';
 import { DynamicDataSheetGrid, textColumn, keyColumn, dateColumn, intColumn, checkboxColumn } from "react-datasheet-grid";
 import 'react-datasheet-grid/dist/style.css'
 import ExcelExport from "../../services/excelexport";
@@ -10,58 +10,70 @@ const DateSheet = ({dateString}) => {
     const [date, setDate] = useState(null);
     const [validDate, setValidDate] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState([]);
+    const [disabledEditing, setDisabledEditing] = useState(true);
     
     const [id, setId] = useState(0);
     const [spreadSheetData, setSpreadSheetData] = useState([]);
+    const [backupData, setBackUpData] = useState([]);
 
     const columns = useMemo(() => [
         {
           ...keyColumn('serialimei', textColumn),
           title: 'Serial/Imei',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('name', textColumn),
           title: 'Name',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('supplier', textColumn),
           title: 'Supplier',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('date', textColumn),
           title: 'Date',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('quantity', intColumn),
           title: 'Quantity',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('notes', textColumn),
           title: 'Notes',
-          cellClassName: "grid-notes"
+          cellClassName: "grid-notes",
+          disabled: disabledEditing
         },
         {
           ...keyColumn('alvlp', checkboxColumn),
           title: 'AL/VLP',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('ul', checkboxColumn),
           title: 'UL',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('mdm', checkboxColumn),
           title: 'MDM',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('reset', checkboxColumn),
           title: 'Reset',
+          disabled: disabledEditing
         },
         {
           ...keyColumn('gtg', checkboxColumn),
           title: 'GTG',
+          disabled: disabledEditing
         },
-      ], [])
+      ], [disabledEditing])
 
     const isValidDate = (stringToCheck) => {
         // Regular expression to validate "dd/MM/yyyy" format
@@ -94,6 +106,17 @@ const DateSheet = ({dateString}) => {
     }
 
     const createRow = useCallback(() => ({ id: genId() }), [])
+
+    const toggleEdit = () => {
+      if (disabledEditing) {
+        setBackUpData(spreadSheetData);
+        setDisabledEditing(false);
+      }
+      else {        
+        setSpreadSheetData(backupData);
+        setDisabledEditing(true)
+      }
+    }
     
     useEffect(() => {
         setValidDate(isValidDate(dateString));
@@ -101,10 +124,9 @@ const DateSheet = ({dateString}) => {
 
         setIsLoading(true);
 
-        ApiGetInventoryByDate(dateString)
+        ApiGetAllByDate(dateString)
             .then(res => res.json())
             .then(res => {
-                setData(res)
                 setIsLoading(false);
                 setSpreadSheetData(res)
             });
@@ -137,6 +159,26 @@ const DateSheet = ({dateString}) => {
                     <Button onClick={exportData} color="success" style={{marginTop: "1vh"}}>
                         Save to .xlsx File
                     </Button>
+
+                    {
+                      disabledEditing ? (
+                        <Button onClick={toggleEdit} color="secondary" style={{marginTop: "1vh", marginLeft: "1vh"}}>
+                            Edit data
+                        </Button>
+                      ) : (
+                        <>
+                          <Button color="primary" style={{marginTop: "1vh", marginLeft: "1vh"}}>
+                              Commit Edit
+                          </Button>
+
+                          <Button color="secondary" onClick={toggleEdit} style={{marginTop: "1vh", marginLeft: "1vh"}}>
+                              Cancel Edit
+                          </Button>
+                        </> 
+                      )
+                    }
+
+                    
                 </>
             }
         </>
