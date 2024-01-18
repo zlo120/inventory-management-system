@@ -4,6 +4,8 @@ import Layout from './components/Layout';
 import Landing from './components/pages/Landing';
 import Summary from './components/pages/Summary';
 import Add from './components/pages/Add';
+import Sheets from './components/pages/Sheets';
+import StockIntake from './components/pages/StockIntake';
 
 const App = () => {
 
@@ -15,6 +17,8 @@ const App = () => {
           <Route path='add' element={<Add />} />
           <Route path='outstanding' element={<Summary />} />
           <Route path='summary' element={<Summary />} />
+          <Route path='sheets' element={<Sheets />} />
+          <Route path='stockintake' element={<StockIntake />} />
         </Route>
       </Routes>
     </BrowserRouter>

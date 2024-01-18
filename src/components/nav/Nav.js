@@ -51,9 +51,9 @@ const CustomSideNav = () => {
                 </MenuItem>
                 
                 <MenuItem 
-                  component={<Link to="/summary" />}
+                  component={<Link to="/sheets" />}
                 > 
-                  Summary 
+                  Sheets 
                 </MenuItem>
 
                 <SubMenu label="Account">

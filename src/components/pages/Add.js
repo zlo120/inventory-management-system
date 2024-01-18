@@ -4,14 +4,23 @@ import 'react-datasheet-grid/dist/style.css'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Blocks } from 'react-loader-spinner';
 import FormatData from "../../utils/FormatData";
-import ApiSend from "../../services/api";
+import ValidateData from "../../utils/ValidateData";
+import { ApiSendInventoryList } from "../../services/api";
 
 const Add = () => {
   const [isLoading, setLoading] = useState(false);  
+  const [insertSuccessful, setInsertSuccessful] = useState(false);
+
   const [modal, setModal] = useState(false);
   const [keyboard, setKeyboard] = useState(true);
   const toggle = () => {
     if (!isLoading) setModal(!modal)
+  }
+
+  const successToggle = () => {
+    if (isLoading) setLoading(false);
+    if (insertSuccessful) setInsertSuccessful(false);
+    setModal(!modal)
   }
 
   const [id, setId] = useState(0);
@@ -96,7 +105,26 @@ const Add = () => {
   const createRow = useCallback(() => ({ id: genId() }), [])
 
   const sendData = () => {
-    setLoading(true);
+    setLoading(true);    
+
+    const formattedData = FormatData(data);
+
+    if (formattedData.length == 0) {
+      return setLoading(false);
+    }
+
+    if (!ValidateData(data)) {
+      return setLoading(false);
+    }
+
+    ApiSendInventoryList(formattedData)
+      .then(res => res.json())
+      .then(res => {
+        if (res === "Successful!") {
+          setLoading(false);
+          setInsertSuccessful(true);
+        }
+      });
   }
 
   return (      
@@ -124,9 +152,7 @@ const Add = () => {
           <ModalHeader>Confirm Data Entry</ModalHeader>
           <ModalBody>
             {
-              !isLoading ? (<p>Are you ready to add this data into the database?</p>)
-              : 
-              (
+              isLoading ? (
                 <>
                   <p style={{textAlign:"center"}}>Please wait while it is being entered</p>
                   
@@ -143,11 +169,27 @@ const Add = () => {
                   </div>
                 </>
               )
+              : insertSuccessful ? ( 
+                <>
+                  <p style={{textAlign:"center"}}>Your data has been successfully entered!</p>
+                </> 
+              )
+              : 
+              (
+                <p>Are you ready to add this data into the database?</p>
+              )
             }
           </ModalBody>
           <ModalFooter>
             {
-              !isLoading ? (
+              insertSuccessful ? (
+                <>
+                  <Button color="primary" onClick={successToggle}>
+                    Done
+                  </Button>
+                </>
+              )
+              : !isLoading ? (
               <>
                 <Button color="primary" onClick={sendData}>
                   Enter Data
