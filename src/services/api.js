@@ -20,7 +20,10 @@ const ApiSendInventoryList = (data) => {
     return fetch('https://localhost:7110/api/InventoryItem', {
         method: "POST",
         headers: {
-            'Accept': 'application/json',
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('token'),
             "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
@@ -43,23 +46,62 @@ const ApiUpdateInventoryList = (data) => {
     return fetch('https://localhost:7110/api/InventoryItem/UpdateDate', {
         method: "POST",
         headers: {
-            'Accept': 'application/json',
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('token'),
             "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
     });
 };
 const ApiGetAllDates = () => {
-    return fetch('https://localhost:7110/api/InventoryItem/GetAllDates')
+    return fetch('https://localhost:7110/api/InventoryItem/GetAllDates', {
+        method: 'GET',
+        headers: {
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('token')
+            
+        }
+    })
 };
 const ApiGetAllByDate = (date) => {
-    return fetch(`https://localhost:7110/api/InventoryItem?date=${date}`)
+    return fetch(`https://localhost:7110/api/InventoryItem?date=${date}`, {
+        method: 'GET',
+        headers: {
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('token')
+            
+        }
+    })
 };
 const ApiGetAllBySerial = (serial) => {
-    return fetch(`https://localhost:7110/api/InventoryItem?serial=${serial}`)
+    return fetch(`https://localhost:7110/api/InventoryItem?serial=${serial}`, {
+        method: 'GET',
+        headers: {
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('token')
+            
+        }
+    })
 };
 const ApiGetAllByName = (name) => {
-    return fetch(`https://localhost:7110/api/InventoryItem?name=${name}`)
+    return fetch(`https://localhost:7110/api/InventoryItem?name=${name}`, {
+        method: 'GET',
+        headers: {
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('token')
+            
+        }
+    })
 };
 const ApiLogIn = (email, password) => {    
     let body = {

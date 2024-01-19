@@ -71,8 +71,8 @@ const InventoryList = (data) => {
     setDateInput(formattedDate);
   }
 
-  const handleSubmit = () => {
-    console.log("handling search!!")
+  const handleSubmit = e => {
+    e.preventDefault();    
     if (serialInput === null) return;
 
     if (inputType === "Serial/Imei"){
@@ -111,30 +111,32 @@ const InventoryList = (data) => {
     <div className="ag-theme-quartz" style={{ height: "75vh"}}>
       <h1>Search Inventory</h1>
 
-      <div className='main-search'>
-          {
-            inputType === "Serial/Imei" ? (<Input className='inventory-search' placeholder='Serial/Imei' onChange={handleTextChange}/>)
-            : inputType === "Name" ? (<Input className='inventory-search' placeholder='Name' onChange={handleTextChange}/>)
-            : <Input placeholder="date placeholder" type="date" id='datetimepicker' onChange={handleTextChange}/>
-          }
-          <Input
-            id="SearchTypeSelector"
-            type="select"
-            onChange={handleInputChange}
-          >
-            <option>
-              Serial/Imei
-            </option>
-            <option>
-              Name
-            </option>
-            <option>
-              Date
-            </option>
-          </Input>
-          <Button color='primary' onClick={handleSubmit} className='submit-btn'>Search</Button>
-          <Button color='secondary' onClick={reset} className='reset-btn'><GrPowerReset /></Button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className='main-search'>
+            {
+              inputType === "Serial/Imei" ? (<Input className='inventory-search' placeholder='Serial/Imei' onChange={handleTextChange}/>)
+              : inputType === "Name" ? (<Input className='inventory-search' placeholder='Name' onChange={handleTextChange}/>)
+              : <Input placeholder="date placeholder" type="date" id='datetimepicker' onChange={handleTextChange}/>
+            }
+            <Input
+              id="SearchTypeSelector"
+              type="select"
+              onChange={handleInputChange}
+            >
+              <option>
+                Serial/Imei
+              </option>
+              <option>
+                Name
+              </option>
+              <option>
+                Date
+              </option>
+            </Input>
+            <Button color='primary' type='submit' className='submit-btn'>Search</Button>
+            <Button color='secondary' onClick={reset} className='reset-btn'><GrPowerReset /></Button>          
+        </div>
+      </form>
       
       <AgGridReact 
         rowData={rowData} 
