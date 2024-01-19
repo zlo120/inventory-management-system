@@ -6,6 +6,9 @@ import Summary from './components/pages/Summary';
 import Add from './components/pages/Add';
 import Sheets from './components/pages/Sheets';
 import StockIntake from './components/pages/StockIntake';
+import Login from './components/pages/users/Login';
+import Register from './components/pages/users/Register';
+import Logout from './components/pages/users/Logout';
 
 const App = () => {
 
@@ -14,6 +17,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Landing />} />
+          <Route path='logout' element={<Logout />} />
+          <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
           <Route path='add' element={<Add />} />
           <Route path='outstanding' element={<Summary />} />
           <Route path='summary' element={<Summary />} />

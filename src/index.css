@@ -100,3 +100,32 @@ code {
   align-items: center;
   justify-content: center;
 }
+
+.authentication-form-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10vh 3vw 10vh 3vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authentication-form * {
+  margin-bottom: 1vh;
+}
+
+.authentication-bg {
+  /* Center the text horizontally and vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  background-color: #0093E9;
+  background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+}
+
+.my-alert {
+  position: absolute;
+  top: 5%;
+}

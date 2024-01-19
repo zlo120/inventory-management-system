@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
@@ -7,6 +8,7 @@ import { ApiGetAllData, ApiGetAllBySerial, ApiGetAllByName, ApiGetAllByDate } fr
 import { GrPowerReset } from "react-icons/gr";
 
 const InventoryList = (data) => {
+  const navigate = useNavigate();
   const defaultColDef = useMemo(() => {
     return {
       flex: 1,
@@ -99,7 +101,10 @@ const InventoryList = (data) => {
   useEffect(() => {
     ApiGetAllData()
       .then(res => res.json())
-      .then(res => setRowData(res))      
+      .then(res => setRowData(res))
+      .catch(err => {
+        navigate("/login?error=true");
+      })
   }, [])
   
   return (
