@@ -16,6 +16,8 @@ const Login = () => {
     const onErrorDismiss = () => setErrorAlertVisible(false);
     const [signedOutAlertVisible, setsignedOutAlertVisible] = useState(true);  
     const onSignedOutAlertDismiss = () => setsignedOutAlertVisible(false);
+    const [registeredAlertVisisble, setRegisteredAlertVisisble] = useState(true);  
+    const onRegisteredAlertDismiss = () => setRegisteredAlertVisisble(false);
     
     const handleEmailChange = event => {
         const input = event.target.value;
@@ -59,6 +61,10 @@ const Login = () => {
                 : searchParams.get('signedout') === "true" ?
                 <div className="my-alert">
                     <Alert isOpen={signedOutAlertVisible} toggle={onSignedOutAlertDismiss} color="success">You have been successfully signed out.</Alert>
+                </div>
+                : searchParams.get('registered') === "true" ?
+                <div className="my-alert">
+                    <Alert isOpen={registeredAlertVisisble} toggle={onRegisteredAlertDismiss} color="success">Your account has been successfully registered!</Alert>
                 </div> 
                 :
                 null

@@ -120,6 +120,23 @@ const ApiLogIn = (email, password) => {
         body: JSON.stringify(body)
     });
 };
+const ApiRegister = (email, password) => {    
+    let body = {
+        "email": email,
+        "password": password,
+    }
+
+    console.log(body);
+
+    return fetch('https://localhost:7110/api/User', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+};
 
 export {
     ApiSendInventoryList,
@@ -130,4 +147,5 @@ export {
     ApiGetAllBySerial,
     ApiUpdateInventoryList,
     ApiLogIn,
+    ApiRegister,
 }
