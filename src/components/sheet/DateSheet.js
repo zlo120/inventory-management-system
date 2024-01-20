@@ -16,11 +16,9 @@ const DateSheet = ({dateString}) => {
       if (!isLoading) setModal(!modal)
     }
 
-    const successToggle = () => {
-      setBackUpData(spreadSheetData);
-      if (sendingLoading) setSendingLoading(false);
-      if (insertSuccessful) setInsertSuccessful(false);
-
+    // this method was developed because for some reason the date format would change
+    //  from dd/MM/yyyy to yyyy-MM-dd
+    const resetDateFormat = () => {
       setSpreadSheetData(
         spreadSheetData.map(entry => {
           const [year, month, day] = entry.date.split('-');
@@ -29,12 +27,31 @@ const DateSheet = ({dateString}) => {
           return entry;
         })
       )
+    }
+
+    const successToggle = () => {
+      setBackUpData(spreadSheetData);
+      if (sendingLoading) setSendingLoading(false);
+      if (insertSuccessful) setInsertSuccessful(false);
+
+      resetDateFormat();
 
       setDisabledEditing(true);
       setModal(!modal)
     }
 
     const invalidDateToggle = () => {
+      resetDateFormat();
+      setInvalidFields(false);
+      setSendingLoading(false);
+      setInsertSuccessful(false);
+      setInvalidDate(false);
+      setModal(!modal);
+    }
+
+    const invalidFieldsToggle = () => {
+      resetDateFormat();
+      setInvalidFields(false);
       setSendingLoading(false);
       setInsertSuccessful(false);
       setInvalidDate(false);
@@ -46,6 +63,7 @@ const DateSheet = ({dateString}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [invalidDate, setInvalidDate] = useState(false);
     const [disabledEditing, setDisabledEditing] = useState(true);
+    const [invalidFields, setInvalidFields] = useState(false);
     
     const [id, setId] = useState(0);
     const [spreadSheetData, setSpreadSheetData] = useState([]);
@@ -156,6 +174,7 @@ const DateSheet = ({dateString}) => {
       setSendingLoading(true);
 
       for(let i = 0; i < spreadSheetData.length; i++) {
+        console.log(spreadSheetData[i].date)
         if (!isValidDate(spreadSheetData[i].date)) {
           setInvalidDate(true);
           return;
@@ -175,12 +194,16 @@ const DateSheet = ({dateString}) => {
       ApiUpdateInventoryList(formattedData)
         .then(res => res.json())
         .then(res => {
-          console.log(`Response: ${JSON.stringify(res)}`);
           if (res === "Successful!") {
             setSendingLoading(false);
             setInsertSuccessful(true);
           }
-        });
+          if (res.title === "One or more validation errors occurred.") {
+            setSendingLoading(false);
+            setInvalidFields(true);
+          }
+        })
+        .catch(res => console.log(`Error is: ${res}`));
     }
     
     useEffect(() => {
@@ -256,7 +279,13 @@ const DateSheet = ({dateString}) => {
             <ModalHeader>Confirm Update</ModalHeader>
             <ModalBody>
               {
-                invalidDate ? (
+                invalidFields ? (
+                  <>
+                    <strong>Missing fields error!</strong>
+                    <p>The fields: Serial/Imei, Name, Supplier, Date and Quantity, must be filled out.</p>
+                  </>
+                )
+                : invalidDate ? (
                   <p>A date you have entered is invalid...</p>
                 )
                 : sendingLoading ? (
@@ -289,7 +318,14 @@ const DateSheet = ({dateString}) => {
             </ModalBody>
             <ModalFooter>
               {
-                invalidDate ? (
+                invalidFields ? (
+                  <>
+                    <Button color="primary" onClick={invalidFieldsToggle}>
+                      Close
+                    </Button>
+                  </>
+                )
+                : invalidDate ? (
                   <>
                     <Button color="primary" onClick={invalidDateToggle}>
                       Okay

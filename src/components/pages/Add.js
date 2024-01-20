@@ -10,6 +10,7 @@ import { ApiSendInventoryList } from "../../services/api";
 const Add = () => {
   const [isLoading, setLoading] = useState(false);  
   const [insertSuccessful, setInsertSuccessful] = useState(false);
+  const [invalidFields, setInvalidFields] = useState(false);
 
   const [modal, setModal] = useState(false);
   const toggle = () => {
@@ -20,6 +21,14 @@ const Add = () => {
     if (isLoading) setLoading(false);
     if (insertSuccessful) setInsertSuccessful(false);
     setModal(!modal)
+  }
+
+  const invalidFieldsToggle = () => {
+    setInvalidFields(false);
+    setLoading(false);
+    setInsertSuccessful(false);
+    
+    setModal(!modal);
   }
 
   const [id, setId] = useState(0);
@@ -123,6 +132,10 @@ const Add = () => {
           setLoading(false);
           setInsertSuccessful(true);
         }
+        if (res.title === "One or more validation errors occurred.") {
+          setLoading(false);
+          setInvalidFields(true);
+        }
       });
   }
 
@@ -151,7 +164,13 @@ const Add = () => {
           <ModalHeader>Confirm Data Entry</ModalHeader>
           <ModalBody>
             {
-              isLoading ? (
+              invalidFields ? (
+                <>
+                  <strong>Missing fields error!</strong>
+                  <p>The fields: Serial/Imei, Name, Supplier, Date and Quantity, must be filled out.</p>
+                </>
+              )
+              : isLoading ? (
                 <>
                   <p style={{textAlign:"center"}}>Please wait while it is being entered</p>
                   
@@ -181,7 +200,14 @@ const Add = () => {
           </ModalBody>
           <ModalFooter>
             {
-              insertSuccessful ? (
+              invalidFields ? (
+                <>
+                  <Button color="primary" onClick={invalidFieldsToggle}>
+                    Close
+                  </Button>
+                </>
+              )
+              : insertSuccessful ? (
                 <>
                   <Button color="primary" onClick={successToggle}>
                     Done
