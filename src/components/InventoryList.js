@@ -22,7 +22,7 @@ const InventoryList = (data) => {
   const [colDefs, setColDefs] = useState([
     { 
       field: "id",
-      maxWidth: 100
+      minWidth: 100
     },
     { 
       field: "serialimei",
@@ -38,11 +38,11 @@ const InventoryList = (data) => {
     },
     { 
       field: "date" , 
-      maxWidth: 150,
+      minWidth: 150,
     },
     { 
       field: "quantity", 
-      maxWidth: 90, 
+      minWidth: 90, 
     },
     { 
       field: "notes",
