@@ -1,9 +1,14 @@
 import * as FileSaver from 'file-saver';
 import XLSX from 'sheetjs-style';
 
-const ExcelExport = async (spreadhSheetData) => {
+const ExcelExport = async (spreadhSheetData, master) => {
     const originalDate = spreadhSheetData[0].date;
-    const fileName = originalDate.replace(/\//g, '-');
+    let fileName = "";
+    if (master) {
+        fileName = "Tech22 Inventory Master Sheet";
+    } else {
+        fileName = originalDate.replace(/\//g, '-');
+    }
 
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';

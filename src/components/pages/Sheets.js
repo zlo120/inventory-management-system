@@ -30,6 +30,7 @@ const Sheets = () => {
             
             <Input className="search-sheets" placeholder="filter by date" maxLength={10} onChange={handleInputChange}/>
             <ul>
+                <li><Link to={{ pathname: '/stockintake', search: `?master=true` }}>Master Sheet</Link></li>
                 {
                     searchResults
                         .map(date => (
