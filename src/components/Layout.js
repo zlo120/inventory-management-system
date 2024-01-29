@@ -10,15 +10,10 @@ const Layout = () => {
         )
     }
 
-
     return (
-        <div className='main-layout'>
-            <div className='custom-side-nav'>
-                <CustomSideNav />
-            </div>
-            <div className='outlet'>
-                <Outlet />
-            </div>
+        <div style={{ display: 'flex', height: '100%', minHeight: '400px', width: '100%', minWidth: "100%" }}>
+          <CustomSideNav />
+          <main style={{ padding: 10, minWidth: "85vw" }}><Outlet /></main>
         </div>
     )
 }

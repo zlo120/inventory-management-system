@@ -1,6 +1,7 @@
 import { Sidebar, Menu, MenuItem, SubMenu, sidebarClasses, menuClasses } from 'react-pro-sidebar';
 import Badge from '../Badge';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/boxes.png';
 
 const CustomSideNav = () => {          
     return (
@@ -10,13 +11,12 @@ const CustomSideNav = () => {
               backgroundColor: 'white',
               color: '#607489',
               minHeight: "100vh",
-              minWidth: "10vw,",
-              maxWidth: "20vw",
             },
           }}
         >
-          <div className='nav-header'>
-            <h1>Tech22 <br /> Inventory System </h1>
+          <div className='nav-header' style={{paddingTop: "3vh"}}>
+            <img src={logo} style={{width: "50%"}} />
+            <h3>Tech22 <br /> Inventory System </h3>
           </div>
             <Menu
               menuItemStyles={{
@@ -37,12 +37,12 @@ const CustomSideNav = () => {
                   Main Inventory 
                 </MenuItem>
 
-                <MenuItem 
+                {/* <MenuItem 
                   suffix={<Badge text={"3"} />}
                   component={<Link to="/outstanding" />}
                 > 
                   Outstanding Inventory 
-                </MenuItem>
+                </MenuItem> */}
 
                 <MenuItem 
                   component={<Link to="/add" />}

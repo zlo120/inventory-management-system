@@ -108,7 +108,7 @@ const InventoryList = (data) => {
   }, [])
   
   return (
-    <div className="ag-theme-quartz" style={{ height: "75vh"}}>
+    <div className="ag-theme-quartz" style={{ height: "75vh", minWidth: "80vw"}}>
       <h1>Search Inventory</h1>
 
       <form onSubmit={handleSubmit}>
