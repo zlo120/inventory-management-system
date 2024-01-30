@@ -1,36 +1,41 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ApiLogIn, ApiRegister } from "../../../services/api";import { useEffect, useState } from "react";
+import { ApiRegister } from "../../../services/api";import { useEffect, useState } from "react";
 import { Input, FormFeedback, Button, Alert } from 'reactstrap'
 
 const Register = () => {    
+    // hooks
     const navigate = useNavigate();
 
+    // form fields' states 
     const [isInvalid, setIsInvalid] = useState(false);    
     const [emailField, setEmailField] = useState(null);
     const [passwordField, setPasswordField] = useState(null);
     const [confirmPasswordField, setConfirmPasswordField] = useState(null);
     const [errorType, setErrorType] = useState(null);
 
+    // validation state
+    const [isValidating, setIsValidating] = useState(false);
+
+    // handle input changes
     const handleEmailChange = event => {
         const input = event.target.value;
         setEmailField(input);
         setIsInvalid(false)
     }
-
     const handlePasswordChange = event => {
         const input = event.target.value;
         setPasswordField(input);
         setIsInvalid(false)
     }
-
     const handleConfirmPasswordChange = event => {
         const input = event.target.value;
         setConfirmPasswordField(input);
         setIsInvalid(false)
     }
-
     const handleSubmit = e => {
         e.preventDefault();
+
+        setIsValidating(true);
         
         if (emailField === null || passwordField === null || confirmPasswordField === null) return;   
         
@@ -47,17 +52,21 @@ const Register = () => {
                 if (res.message === "A user with that email already exists") {                    
                     setIsInvalid(true);
                     setErrorType("email");
+                    setIsValidating(false);
                     return;
                 }
 
                 if (res.message === "Something went wrong creating your account") {
                     setIsInvalid(true);
                     setErrorType("unexpected");
+                    setIsValidating(false);
                     return;
                 }
 
                 if (res.message === "User has been created!") {
+                    setIsValidating(false);
                     navigate('/login?registered=true');
+                    return;
                 }
             })
     }
@@ -87,7 +96,7 @@ const Register = () => {
                             : null
                         }
 
-                        <Button style={{width:"100%"}} color="primary" type="submit">Submit</Button>
+                        <Button style={{width:"100%"}} color="primary" type="submit" disabled={isValidating}>Submit</Button>
                         <p>Already have an account?<br /><Link to="/login">Log in here</Link></p>
                     </form>
                 </div>

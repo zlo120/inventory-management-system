@@ -10,6 +10,13 @@ const Sheets = () => {
     const [dates, setDates] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     
+    const handleInputChange = event => {
+        const input = event.target.value;        
+        setSearchResults(
+            dates.filter(date => date.includes(input))
+        )    
+    };
+
     useEffect(()=> {
         if (!checkValidation(navigate)) {
             return;
@@ -22,13 +29,6 @@ const Sheets = () => {
                 setSearchResults(data);
             })
     }, [])
-
-    const handleInputChange = event => {
-        const input = event.target.value;        
-        setSearchResults(
-            dates.filter(date => date.includes(input))
-        )    
-    };
 
     return (
         <>

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
-import { Input, FormFeedback, Button, Alert } from 'reactstrap'
-import { Oval } from 'react-loader-spinner';
+import { Input, FormFeedback, Button, Alert } from 'reactstrap';
 import { ApiLogIn } from "../../../services/api";
 import Cookies from "js-cookie";
 
 const Login = () => {
+    // hooks
     const navigate = useNavigate();
-
     const [searchParams, setSearchParams] = useSearchParams();
 
     // Form fields' states
@@ -34,6 +33,7 @@ const Login = () => {
         }
     })
     
+    // handle input changes
     const handleEmailChange = event => {
         const input = event.target.value;
         setEmailField(input);

@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
-import "ag-grid-community/styles/ag-grid.css"; // Core CSS
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
-import { Form, FormGroup, Input, Button } from 'reactstrap';
+import { Input, Button } from 'reactstrap';
 import { ApiGetAllData, ApiGetAllBySerial, ApiGetAllByName, ApiGetAllByDate } from '../../services/api';
 import { GrPowerReset } from "react-icons/gr";
 import checkValidation from '../../services/checkValidation';
+import "ag-grid-community/styles/ag-grid.css"; // Core CSS
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 
 const InventoryList = (data) => {
+  // hooks
   const navigate = useNavigate();
   const defaultColDef = useMemo(() => {
     return {
@@ -16,7 +17,6 @@ const InventoryList = (data) => {
       minWidth: 10,
     };
   }, []);
-
   const [rowData, setRowData] = useState([])
 
   // Column Definitions: Defines & controls grid columns.
@@ -51,6 +51,7 @@ const InventoryList = (data) => {
     }
   ]);
 
+  // search inputs
   const [inputType, setInputType] = useState("Serial/Imei");
   const [previousInputType, setPreviousInputType] = useState("Serial/Imei");
   const [serialInput, setSerialInput] = useState(null);
@@ -61,7 +62,6 @@ const InventoryList = (data) => {
     const input = event.target.value;   
     setInputType(input);
   };
-
   const handleTextChange = event => {
     const input = event.target.value;
     setSerialInput(input); 
@@ -70,10 +70,10 @@ const InventoryList = (data) => {
     var dateParts = input.split('-');
     let formattedDate = dateParts[2] + '/' + dateParts[1] + '/' + dateParts[0];
     setDateInput(formattedDate);
-  }
-
+  };
   const handleSubmit = e => {
     e.preventDefault();    
+
     if (serialInput === null) return;
 
     if (inputType === "Serial/Imei"){
@@ -91,13 +91,12 @@ const InventoryList = (data) => {
         .then(res => res.json())
         .then(res => setRowData(res));
     }
-  }
-
+  };
   const reset = () => {
     ApiGetAllData()
       .then(res => res.json())
       .then(res => setRowData(res))
-  }
+  };
 
   useEffect(() => {
     if (!checkValidation(navigate)) return;

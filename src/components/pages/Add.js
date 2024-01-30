@@ -1,72 +1,26 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DynamicDataSheetGrid, textColumn, keyColumn, dateColumn, intColumn, checkboxColumn } from "react-datasheet-grid";
-import 'react-datasheet-grid/dist/style.css'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Blocks } from 'react-loader-spinner';
-import FormatData from "../../utils/FormatData";
-import ValidateData from "../../utils/ValidateData";
 import { ApiSendInventoryList } from "../../services/api";
+import FormatData from "../../utils/FormatData";
 import checkValidation from "../../services/checkValidation";
+import 'react-datasheet-grid/dist/style.css'
 
 const Add = () => {
+  // hooks
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(false);  
-  const [insertSuccessful, setInsertSuccessful] = useState(false);
-  const [invalidFields, setInvalidFields] = useState(false);
 
-  const [modal, setModal] = useState(false);
-  const toggle = () => {
-    if (!isLoading) setModal(!modal)
-  }
-
-  const successToggle = () => {
-    if (isLoading) setLoading(false);
-    if (insertSuccessful) setInsertSuccessful(false);
-    setModal(!modal)
-  }
-
-  const invalidFieldsToggle = () => {
-    setInvalidFields(false);
-    setLoading(false);
-    setInsertSuccessful(false);
-    
-    setModal(!modal);
-  }
-
+  // grid
   const [id, setId] = useState(0);
   const [data, setData] = useState([]);
-
   const initialNumOfRows = 50;
-
-  useEffect(() => {
-    if (!checkValidation(navigate)) return;
-    
-    let emptyData = [];
-    for (let i = 1; i <= initialNumOfRows; i++) {
-      emptyData.push({
-        "serialimei" : null,
-        "name" : null,
-        "supplier" : null,
-        "date" : null,
-        "quantity" : null,
-        "notes" : null,
-        "alvlp" : null,
-        "ul" : null,
-        "mdm" : null,
-        "reset" : null,
-        "gtg" : null,
-      })
-    }
-
-    setData(emptyData);
-  }, [])
 
   const genId = () => {
     setId(id + 1);
     return id;
-  }
-
+  };
   const columns = useMemo(() => [
     {
       ...keyColumn('serialimei', textColumn),
@@ -113,20 +67,38 @@ const Add = () => {
       ...keyColumn('gtg', checkboxColumn),
       title: 'GTG',
     },
-  ], [])
+  ], []);
+  const createRow = useCallback(() => ({ id: genId() }), []);
 
-  const createRow = useCallback(() => ({ id: genId() }), [])
+  // modal
+  const [insertSuccessful, setInsertSuccessful] = useState(false);
+  const [invalidFields, setInvalidFields] = useState(false);
+  const [isLoading, setLoading] = useState(false);  
+  const [modal, setModal] = useState(false);
 
+  const toggle = () => {
+    if (!isLoading) setModal(!modal)
+  }
+  const successToggle = () => {
+    if (isLoading) setLoading(false);
+    if (insertSuccessful) setInsertSuccessful(false);
+    setModal(!modal)
+  }
+  const invalidFieldsToggle = () => {
+    setInvalidFields(false);
+    setLoading(false);
+    setInsertSuccessful(false);
+    
+    setModal(!modal);
+  }
+
+  // api
   const sendData = () => {
     setLoading(true);
 
     const formattedData = FormatData(data);
 
     if (formattedData.length == 0) {
-      return setLoading(false);
-    }
-
-    if (!ValidateData(data)) {
       return setLoading(false);
     }
 
@@ -143,6 +115,29 @@ const Add = () => {
         }
       });
   }
+
+  useEffect(() => {
+    if (!checkValidation(navigate)) return;
+    
+    let emptyData = [];
+    for (let i = 1; i <= initialNumOfRows; i++) {
+      emptyData.push({
+        "serialimei" : null,
+        "name" : null,
+        "supplier" : null,
+        "date" : null,
+        "quantity" : null,
+        "notes" : null,
+        "alvlp" : null,
+        "ul" : null,
+        "mdm" : null,
+        "reset" : null,
+        "gtg" : null,
+      })
+    }
+
+    setData(emptyData);
+  }, [])
 
   return (      
       <div style={{minHeight: "80vh"}}>

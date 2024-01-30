@@ -7,6 +7,8 @@ const Layout = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // renders
+
     // if the user is at /, /login or /register and they DO have a token
     if (
         (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 

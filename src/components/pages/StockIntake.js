@@ -6,16 +6,17 @@ import MasterSheet from '../pages/sheet/MasterSheet';
 import checkValidation from '../../services/checkValidation';
 
 const StockIntake = () => {
+    // hooks
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        checkValidation(navigate);
-    }, [])
-    
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();    
     const date = searchParams.get("date");
     const master = searchParams.get("master");
 
+    useEffect(() => {
+        checkValidation(navigate);
+    }, [])
+
+    // renders
     if (master === "true") return (<MasterSheet />)
     
     if (date === "undefined" || date === null) 
