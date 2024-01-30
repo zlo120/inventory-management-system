@@ -1,8 +1,17 @@
-import DateSheet from '../sheet/DateSheet';
+import DateSheet from '../pages/sheet/DateSheet';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link, useSearchParams } from "react-router-dom";
-import MasterSheet from '../sheet/MasterSheet';
+import MasterSheet from '../pages/sheet/MasterSheet';
+import checkValidation from '../../services/checkValidation';
 
 const StockIntake = () => {
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        checkValidation(navigate);
+    }, [])
+    
     const [searchParams, setSearchParams] = useSearchParams();
     const date = searchParams.get("date");
     const master = searchParams.get("master");

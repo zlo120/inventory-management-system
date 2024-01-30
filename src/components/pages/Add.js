@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { DynamicDataSheetGrid, textColumn, keyColumn, dateColumn, intColumn, checkboxColumn } from "react-datasheet-grid";
 import 'react-datasheet-grid/dist/style.css'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -6,8 +7,10 @@ import { Blocks } from 'react-loader-spinner';
 import FormatData from "../../utils/FormatData";
 import ValidateData from "../../utils/ValidateData";
 import { ApiSendInventoryList } from "../../services/api";
+import checkValidation from "../../services/checkValidation";
 
 const Add = () => {
+  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);  
   const [insertSuccessful, setInsertSuccessful] = useState(false);
   const [invalidFields, setInvalidFields] = useState(false);
@@ -37,6 +40,8 @@ const Add = () => {
   const initialNumOfRows = 50;
 
   useEffect(() => {
+    if (!checkValidation(navigate)) return;
+    
     let emptyData = [];
     for (let i = 1; i <= initialNumOfRows; i++) {
       emptyData.push({

@@ -11,12 +11,12 @@ import Register from './components/pages/users/Register';
 import Logout from './components/pages/users/Logout';
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Landing />} />
+          <Route index element={<Login />} />
+          <Route path='inventory' element={<Landing />} />
           <Route path='logout' element={<Logout />} />
           <Route path='login' element={<Login />} />
           <Route path='register' element={<Register />} />

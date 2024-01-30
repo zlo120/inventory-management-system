@@ -4,8 +4,9 @@ import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { Form, FormGroup, Input, Button } from 'reactstrap';
-import { ApiGetAllData, ApiGetAllBySerial, ApiGetAllByName, ApiGetAllByDate } from '../services/api';
+import { ApiGetAllData, ApiGetAllBySerial, ApiGetAllByName, ApiGetAllByDate } from '../../services/api';
 import { GrPowerReset } from "react-icons/gr";
+import checkValidation from '../../services/checkValidation';
 
 const InventoryList = (data) => {
   const navigate = useNavigate();
@@ -99,10 +100,12 @@ const InventoryList = (data) => {
   }
 
   useEffect(() => {
+    if (!checkValidation(navigate)) return;
     ApiGetAllData()
       .then(res => res.json())
       .then(res => setRowData(res))
       .catch(err => {
+        console.log(err)
         navigate("/login?error=true");
       })
   }, [])

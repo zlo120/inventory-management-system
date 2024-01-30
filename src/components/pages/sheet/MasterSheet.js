@@ -1,14 +1,14 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { ApiGetAllByDate, ApiUpdateInventoryList } from "../../services/api";
+import { ApiGetAllData, ApiUpdateInventoryList } from "../../../services/api";
 import { Blocks } from 'react-loader-spinner';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { DynamicDataSheetGrid, textColumn, keyColumn, dateColumn, intColumn, checkboxColumn } from "react-datasheet-grid";
 import 'react-datasheet-grid/dist/style.css'
-import ExcelExport from "../../services/excelexport";
-import FormatData from "../../utils/FormatData";
-import ValidateData from "../../utils/ValidateData";
+import ExcelExport from "../../../services/excelexport";
+import FormatData from "../../../utils/FormatData";
+import ValidateData from "../../../utils/ValidateData";
 
-const DateSheet = ({dateString}) => {  
+const MasterSheet = () => {  
     const [insertSuccessful, setInsertSuccessful] = useState(false);
     const [modal, setModal] = useState(false);
     const [sendingLoading, setSendingLoading] = useState(false);
@@ -59,7 +59,6 @@ const DateSheet = ({dateString}) => {
     }
 
     const [date, setDate] = useState(null);
-    const [validDate, setValidDate] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [invalidDate, setInvalidDate] = useState(false);
     const [disabledEditing, setDisabledEditing] = useState(true);
@@ -155,7 +154,7 @@ const DateSheet = ({dateString}) => {
     }
 
     const exportData = async () => {
-        await ExcelExport(spreadSheetData);
+        await ExcelExport(spreadSheetData, true);
     }
 
     const createRow = useCallback(() => ({ id: genId() }), [])
@@ -207,12 +206,9 @@ const DateSheet = ({dateString}) => {
     }
     
     useEffect(() => {
-        setValidDate(isValidDate(dateString));
-        setDate(dateString);
-
         setIsLoading(true);
-
-        ApiGetAllByDate(dateString)
+        // Change API call
+        ApiGetAllData()
             .then(res => res.json())
             .then(res => {
                 setIsLoading(false);
@@ -224,8 +220,7 @@ const DateSheet = ({dateString}) => {
     return (
         <>
             {
-                !validDate ? "Invalid Date"
-                : isLoading ? (
+                isLoading ? (
                     <Blocks
                         height="80"
                         width="80"
@@ -366,4 +361,4 @@ const DateSheet = ({dateString}) => {
     )
 }
 
-export default DateSheet;
+export default MasterSheet;

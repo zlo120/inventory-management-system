@@ -1,13 +1,14 @@
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"
+import checkValidation from "../../../services/checkValidation";
 
 const Logout =() => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        navigate('/login?signedout=true')
-        Cookies.remove('token');
+        if (!checkValidation(navigate)) return;
+        navigate('/login?signedout=true');
     }, [])
 
     return (

@@ -1,4 +1,4 @@
-import InventoryList from "../InventoryList";
+import InventoryList from "../pages/InventoryList";
 
 const Landing = () => {
     return (
