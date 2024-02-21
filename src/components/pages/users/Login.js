@@ -50,9 +50,11 @@ const Login = () => {
         setIsValidating(true);
         
         if (emailField === null || passwordField === null) return;
+        
         ApiLogIn(emailField, passwordField)
             .then(res => res.json())
             .then(res => {
+                
                 if (res.message === "Invalid credentials") {
                     setIsInvalid(true);
                     setIsValidating(false);
@@ -82,6 +84,10 @@ const Login = () => {
                 searchParams.get('error') === "true" ? 
                 <div className="my-alert">
                     <Alert isOpen={errorAlertVisible} toggle={onErrorDismiss} color="danger">An error has occured, either your token has expired or the connection to the server has been lost. Please try log in again.</Alert>
+                </div>
+                : searchParams.get('connection-error') === "true" ? 
+                <div className="my-alert">
+                    <Alert isOpen={errorAlertVisible} toggle={onErrorDismiss} color="danger">Connection to the server has been lost. Please try log in again.</Alert>
                 </div>
                 : searchParams.get('signedout') === "true" ?
                 <div className="my-alert">
