@@ -16,6 +16,10 @@ const Register = () => {
     // validation state
     const [isValidating, setIsValidating] = useState(false);
 
+    // alerts    
+    const [errorConnectingAlert, setErrorConnectingAlert] = useState(false);  
+    const onErrorConnectingAlertDismiss = () => setErrorConnectingAlert(false);
+
     // handle input changes
     const handleEmailChange = event => {
         const input = event.target.value;
@@ -68,16 +72,25 @@ const Register = () => {
                     navigate('/login?registered=true');
                     return;
                 }
+            }).catch(err=> {
+                if (String(err) === "TypeError: Failed to fetch") {
+                    setErrorConnectingAlert(true);
+                }
+                console.log(`${err}`);
+                setIsValidating(false);
             })
     }
     
     return (        
         <div className="authentication-bg">
+            <div className="my-alert">
+                <Alert isOpen={errorConnectingAlert} toggle={onErrorConnectingAlertDismiss} color="danger">There was an error when trying to connect to the server. Please try again later.</Alert>
+            </div>
             <div className="authentication-form-container">
                 <div className="authentication-form">
                     <h2>Register</h2>
                     <form onSubmit={handleSubmit}>
-                        <Input invalid={isInvalid} onChange={handleEmailChange} placeholder="Email"/>                 
+                        <Input type="email" invalid={isInvalid} onChange={handleEmailChange} placeholder="Email"/>                 
                         <Input type="password" invalid={isInvalid} onChange={handlePasswordChange} placeholder="Password"/>  
                         <Input type="password" invalid={isInvalid} onChange={handleConfirmPasswordChange} placeholder="Confirm Password"/>                   
                         {

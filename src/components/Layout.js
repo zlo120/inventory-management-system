@@ -27,16 +27,14 @@ const Layout = () => {
     ) {
         // if use has just been signed out
         return (
-            // <Outlet />
-            <h1>First</h1>
+            <Outlet />
         )
     }  
     else if ((location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 
             && (Cookies.get('token') === undefined)) {
         // if user is at /, /login or /register and they DON'T have a token
         return (
-            // <Outlet />
-            <h1>Third</h1>
+            <Outlet />
         )
     }
 
