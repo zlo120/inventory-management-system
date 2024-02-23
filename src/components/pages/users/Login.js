@@ -54,20 +54,25 @@ const Login = () => {
         ApiLogIn(emailField, passwordField)
             .then(res => res.json())
             .then(res => {
-                
                 if (res.message === "Invalid credentials") {
                     setIsInvalid(true);
                     setIsValidating(false);
                     return;
                 }
-                console.log(res)
-                if (res.token !== undefined || res.token !== null) {
-                    Cookies.set('token', res.token);
-                    navigate('/');
+
+                if (res.bearer === undefined || res.refresh === undefined) {
+                    throw "TokenError: invalid token";
                 }
+
+                Cookies.set('bearer', res.bearer);
+                Cookies.set('refresh', res.refresh);
+                navigate('/inventory');
             })
             .catch(err=> {
-                if (String(err) === "TypeError: Failed to fetch") {
+                if (
+                    String(err) === "TypeError: Failed to fetch"
+                    || String(err) === "TokenError: invalid token"
+                ) {
                     setErrorConnectingAlert(true);
                 }
                 console.log(`${err}`);
@@ -96,7 +101,7 @@ const Login = () => {
                 : searchParams.get('registered') === "true" ?
                 <div className="my-alert">
                     <Alert isOpen={registeredAlertVisisble} toggle={onRegisteredAlertDismiss} color="success">Your account has been successfully registered!</Alert>
-                </div> 
+                </div>
                 :
                 null
             }

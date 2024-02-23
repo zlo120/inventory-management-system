@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import CustomSideNav from './nav/Nav';
 import Cookies from "js-cookie";
 
@@ -11,27 +12,25 @@ const Layout = () => {
     useEffect(() => {
         if (
             (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 
-            && (Cookies.get('token') !== undefined)
+            && (Cookies.get('bearer') !== undefined)
         ) {
                 navigate('/inventory')
         }
     }, [])
 
-    console.log(Cookies.get('token')!== undefined)
-
     // if the user is at /, /login or /register and they DO have a token
     if (
         (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 
-        && (Cookies.get('token') !== undefined)
+        && (Cookies.get('bearer') !== undefined)
         && (searchParams.get("signedout") === "true")
     ) {
         // if use has just been signed out
         return (
             <Outlet />
         )
-    }  
+    }
     else if ((location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 
-            && (Cookies.get('token') === undefined)) {
+            && (Cookies.get('bearer') === undefined)) {
         // if user is at /, /login or /register and they DON'T have a token
         return (
             <Outlet />

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 const checkValidation = (navigate) => {
-    if (Cookies.get("token") === undefined) {
+    if (Cookies.get("bearer") === undefined) {
         navigate("/login?error=true");
         return false;
     } else {

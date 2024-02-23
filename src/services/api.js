@@ -7,7 +7,7 @@ const ApiGetAllData = () => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token')
+                'Authorization' : 'Bearer ' + Cookies.get('bearer')
             
         }
     })
@@ -23,7 +23,7 @@ const ApiSendInventoryList = (data) => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token'),
+                'Authorization' : 'Bearer ' + Cookies.get('bearer'),
             "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
@@ -49,7 +49,7 @@ const ApiUpdateInventoryList = (data) => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token'),
+                'Authorization' : 'Bearer ' + Cookies.get('bearer'),
             "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
@@ -62,7 +62,7 @@ const ApiGetAllDates = () => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token')
+                'Authorization' : 'Bearer ' + Cookies.get('bearer')
             
         }
     })
@@ -74,7 +74,7 @@ const ApiGetAllByDate = (date) => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token')
+                'Authorization' : 'Bearer ' + Cookies.get('bearer')
             
         }
     })
@@ -86,7 +86,7 @@ const ApiGetAllBySerial = (serial) => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token')
+                'Authorization' : 'Bearer ' + Cookies.get('bearer')
             
         }
     })
@@ -98,7 +98,7 @@ const ApiGetAllByName = (name) => {
             Accept: 
                 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization' : 'Bearer ' + Cookies.get('token')
+                'Authorization' : 'Bearer ' + Cookies.get('bearer')
             
         }
     })

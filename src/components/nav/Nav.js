@@ -57,8 +57,8 @@ const CustomSideNav = () => {
                 </MenuItem>
 
                 <SubMenu label="Account">
-                  <MenuItem component={<Link to="/logout" />}> Log Out </MenuItem>
                   <MenuItem> My Account </MenuItem>
+                  <MenuItem component={<Link to="/logout" />}> Log Out </MenuItem>
                 </SubMenu>
             </Menu>
         </Sidebar>
