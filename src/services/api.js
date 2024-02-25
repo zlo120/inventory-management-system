@@ -1,4 +1,6 @@
 import Cookies from "js-cookie";
+
+// Inventory
 const ApiGetAllData = () => {
     return fetch("https://localhost:7110/api/InventoryItem", {
         method: 'GET',
@@ -102,6 +104,8 @@ const ApiGetAllByName = (name) => {
         }
     })
 };
+
+// User
 const ApiLogIn = (email, password) => {    
     let body = {
         "email": email,
@@ -148,6 +152,19 @@ const ApiRefreshToken = () => {
         }
     })
 }
+// Admin portal user management
+const ApiGetAllUsers = () => {
+    return fetch('https://localhost:7110/api/User/GetAllUsers', {
+        method: 'GET',
+        headers: {
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('bearer')
+            
+        }
+    })
+}
 
 export {
     ApiSendInventoryList,
@@ -160,4 +177,6 @@ export {
     ApiLogIn,
     ApiRegister,
     ApiRefreshToken,
+    ApiGetAllUsers,
+
 }

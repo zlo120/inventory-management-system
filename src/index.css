@@ -162,3 +162,11 @@ code {
 .oval {
   overflow: hidden;
 }
+
+.searchFilters {
+  display: flex;
+}
+
+.userGroupsFilter {
+  margin-right: 1rem;
+}

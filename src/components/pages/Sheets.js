@@ -14,7 +14,7 @@ const Sheets = () => {
         const input = event.target.value;        
         setSearchResults(
             dates.filter(date => date.includes(input))
-        )    
+        )
     };
 
     useEffect(()=> {

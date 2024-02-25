@@ -9,6 +9,8 @@ import StockIntake from './components/pages/StockIntake';
 import Login from './components/pages/users/Login';
 import Register from './components/pages/users/Register';
 import Logout from './components/pages/users/Logout';
+import AdminPortal from './components/pages/admin_portal/AdminPortal';
+import ManageUsers from './components/pages/admin_portal/ManageUsers';
 
 const App = () => {
   return (
@@ -22,9 +24,11 @@ const App = () => {
           <Route path='register' element={<Register />} />
           <Route path='add' element={<Add />} />
           <Route path='outstanding' element={<Summary />} />
-          <Route path='summary' element={<Summary />} />
           <Route path='sheets' element={<Sheets />} />
           <Route path='stockintake' element={<StockIntake />} />
+
+          <Route path='admin-portal' element={<AdminPortal />} />
+          <Route path='admin-portal/manage-users' element={<ManageUsers />} />
         </Route>
       </Routes>
     </BrowserRouter>

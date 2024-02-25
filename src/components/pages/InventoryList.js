@@ -7,6 +7,7 @@ import { GrPowerReset } from "react-icons/gr";
 import checkValidation from '../../services/checkValidation';
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
+import Cookies from 'js-cookie';
 
 const InventoryList = (data) => {
   // hooks
