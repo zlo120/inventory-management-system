@@ -54,7 +54,6 @@ const Register = () => {
         ApiRegister(emailField, passwordField)
             .then(res => res.json())
             .then(res => {
-                console.log(res)
                 if (res.message === "A user with that email already exists") {                    
                     setIsInvalid(true);
                     setErrorType("email");

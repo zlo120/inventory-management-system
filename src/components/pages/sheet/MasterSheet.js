@@ -167,7 +167,6 @@ const MasterSheet = () => {
     setSendingLoading(true);
 
     for(let i = 0; i < spreadSheetData.length; i++) {
-      console.log(spreadSheetData[i].date)
       if (!isValidDate(spreadSheetData[i].date)) {
         setInvalidDate(true);
         return;

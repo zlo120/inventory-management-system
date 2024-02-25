@@ -165,8 +165,17 @@ code {
 
 .searchFilters {
   display: flex;
+  justify-content: space-between;
 }
 
 .userGroupsFilter {
-  margin-right: 1rem;
+  margin-bottom: .5rem;
+}
+
+.createUser {
+  right: 0;
+}
+
+.account-creation-form-field {
+  margin-bottom: 1.5vh;
 }

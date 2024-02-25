@@ -41,8 +41,6 @@ const ApiUpdateInventoryList = (data) => {
     let body = {
         "inventoryItems": data
     }
-
-    console.log(body);
     
     return fetch('https://localhost:7110/api/InventoryItem/UpdateDate', {
         method: "POST",
@@ -112,8 +110,6 @@ const ApiLogIn = (email, password) => {
         "password": password,
     }
 
-    console.log(body);
-
     return fetch('https://localhost:7110/api/User/Authenticate', {
         method: 'POST',
         headers: {
@@ -129,13 +125,12 @@ const ApiRegister = (email, password) => {
         "password": password,
     }
 
-    console.log(body);
-
     return fetch('https://localhost:7110/api/User', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization' : 'Bearer ' + Cookies.get('bearer')
         },
         body: JSON.stringify(body)
     });
