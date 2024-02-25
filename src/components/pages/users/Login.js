@@ -55,6 +55,11 @@ const Login = () => {
         ApiLogIn(emailField, passwordField)
             .then(res => res.json())
             .then(res => {
+                if (String(res) === "You must now create your own user password.") {                    
+                    navigate(`/register?user=${emailField}`);
+                    return;
+                }
+
                 if (res.message === "Invalid credentials") {
                     setIsInvalid(true);
                     setIsValidating(false);
@@ -119,7 +124,6 @@ const Login = () => {
                         <Button className="submit" color="primary" type="submit" disabled={isValidating}>
                             Submit
                         </Button>
-                        <p>Don't have an account yet?<br /><Link to="/register">Register here</Link></p>
                     </form>
                 </div>
             </div>

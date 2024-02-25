@@ -147,6 +147,21 @@ const ApiRefreshToken = () => {
         }
     })
 }
+const ApiCreateUserPassword = (email, password) => {    
+    let body = {
+        "email": email,
+        "password": password,
+    }
+
+    return fetch('https://localhost:7110/api/User/CreateUserPassword', {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
+}
 // Admin portal user management
 const ApiGetAllUsers = () => {
     return fetch('https://localhost:7110/api/User/GetAllUsers', {
@@ -173,5 +188,5 @@ export {
     ApiRegister,
     ApiRefreshToken,
     ApiGetAllUsers,
-
+    ApiCreateUserPassword,
 }

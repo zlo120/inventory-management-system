@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ApiRegister } from "../../../services/api";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ApiCreateUserPassword } from "../../../services/api";
 import { Input, FormFeedback, Button, Alert } from 'reactstrap';
 import Cookies from "js-cookie";
 
 const Register = () => {    
     // hooks
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // form fields' states 
     const [isInvalid, setIsInvalid] = useState(false);    
-    const [emailField, setEmailField] = useState(null);
+    const [email, setEmail] = useState(searchParams.get("user"));
     const [passwordField, setPasswordField] = useState(null);
     const [confirmPasswordField, setConfirmPasswordField] = useState(null);
     const [errorType, setErrorType] = useState(null);
@@ -22,12 +23,15 @@ const Register = () => {
     const [errorConnectingAlert, setErrorConnectingAlert] = useState(false);  
     const onErrorConnectingAlertDismiss = () => setErrorConnectingAlert(false);
 
-    // handle input changes
-    const handleEmailChange = event => {
-        const input = event.target.value;
-        setEmailField(input);
-        setIsInvalid(false)
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertText, setAlertText] = useState("");
+    const createAlert = (text) => {
+        setAlertText(text);
+        setAlertVisible(true);
     }
+    const onAlertDismiss = () => setAlertVisible(false);
+
+    // handle input changes
     const handlePasswordChange = event => {
         const input = event.target.value;
         setPasswordField(input);
@@ -43,7 +47,7 @@ const Register = () => {
 
         setIsValidating(true);
         
-        if (emailField === null || passwordField === null || confirmPasswordField === null) return;   
+        if (passwordField === null || confirmPasswordField === null) return;   
         
         if (passwordField !== confirmPasswordField) {
             setIsInvalid(true);
@@ -51,24 +55,18 @@ const Register = () => {
             return;
         }
 
-        ApiRegister(emailField, passwordField)
+        ApiCreateUserPassword(email, passwordField)
             .then(res => res.json())
             .then(res => {
-                if (res.message === "A user with that email already exists") {                    
+                console.log(res);
+                if (String(res) === "No account exists with that email") {
                     setIsInvalid(true);
-                    setErrorType("email");
+                    setErrorType("No email");
                     setIsValidating(false);
                     return;
                 }
 
-                if (res.message === "Something went wrong creating your account") {
-                    setIsInvalid(true);
-                    setErrorType("unexpected");
-                    setIsValidating(false);
-                    return;
-                }
-
-                if (res.message === "User has been created!") {
+                if (String(res) === "Your password is now created!") {
                     setIsValidating(false);
                     navigate('/login?registered=true');
                     return;
@@ -83,8 +81,13 @@ const Register = () => {
     }
 
     useEffect(() => {
+        createAlert("You must now create your own password to finish setting up your account");
         if (Cookies.get('bearer') !== undefined) {
             navigate('/inventory');
+        }
+
+        if (searchParams.get("user") === null) {
+            navigate("/login");
         }
     }, [])
     
@@ -92,22 +95,19 @@ const Register = () => {
         <div className="authentication-bg">
             <div className="my-alert">
                 <Alert isOpen={errorConnectingAlert} toggle={onErrorConnectingAlertDismiss} color="danger">There was an error when trying to connect to the server. Please try again later.</Alert>
+                <Alert isOpen={alertVisible} toggle={onAlertDismiss} color="success">{alertText}</Alert>
             </div>
             <div className="authentication-form-container">
                 <div className="authentication-form">
-                    <h2>Register</h2>
+                    <h2>Create your own password</h2>
                     <form onSubmit={handleSubmit}>
-                        <Input type="email" invalid={isInvalid} onChange={handleEmailChange} placeholder="Email"/>                 
-                        <Input type="password" invalid={isInvalid} onChange={handlePasswordChange} placeholder="Password"/>  
+                        <Input type="email" placeholder="Email" value={email} disabled/>
+                        <Input type="password" invalid={isInvalid} onChange={handlePasswordChange} placeholder="Password"/>
                         <Input type="password" invalid={isInvalid} onChange={handleConfirmPasswordChange} placeholder="Confirm Password"/>                   
                         {
-                            errorType === "password" ? 
+                            errorType === "No email" ? 
                             <FormFeedback>
-                                Your passwords do not a match
-                            </FormFeedback>
-                            : errorType === "email" ? 
-                            <FormFeedback>
-                                This email already exists
+                                No account exists with that email. Please contact a systems administrator
                             </FormFeedback>
                             : errorType === "unexpected" ? 
                             <FormFeedback>
@@ -117,7 +117,6 @@ const Register = () => {
                         }
 
                         <Button style={{width:"100%"}} color="primary" type="submit" disabled={isValidating}>Submit</Button>
-                        <p>Already have an account?<br /><Link to="/login">Log in here</Link></p>
                     </form>
                 </div>
             </div>

@@ -189,7 +189,6 @@ const ManageUsers = () => {
     useEffect(() => {        
         const userGroups = require('../../../models/userGroups');
         if (!checkUserGroup(userGroups.admin)) navigate('/inventory');
-
         getAndProcessData();
     }, []);
 

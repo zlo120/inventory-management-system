@@ -15,7 +15,6 @@ const AdminPortal = () => {
             <h1>Admin Portal</h1>
             <ul>
                 <li><Link to="/admin-portal/manage-users" >Manage users</Link></li>
-                <li><a href="#">Manage inventory</a></li>
                 <li><a href="#">Manage locations</a></li>
                 <li><a href="#">Manage statuses</a></li>
             </ul>
