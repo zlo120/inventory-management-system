@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-
 const ApiGetAllData = () => {
     return fetch("https://localhost:7110/api/InventoryItem", {
         method: 'GET',
@@ -137,6 +136,18 @@ const ApiRegister = (email, password) => {
         body: JSON.stringify(body)
     });
 };
+const ApiRefreshToken = () => {    
+    return fetch(`https://localhost:7110/api/user/refresh`, {
+        method: 'GET',
+        headers: {
+            Accept: 
+                'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : 'Bearer ' + Cookies.get('refresh')
+            
+        }
+    })
+}
 
 export {
     ApiSendInventoryList,
@@ -148,4 +159,5 @@ export {
     ApiUpdateInventoryList,
     ApiLogIn,
     ApiRegister,
+    ApiRefreshToken,
 }

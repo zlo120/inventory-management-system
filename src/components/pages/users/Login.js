@@ -27,9 +27,10 @@ const Login = () => {
     const [errorConnectingAlert, setErrorConnectingAlert] = useState(false);  
     const onErrorConnectingAlertDismiss = () => setErrorConnectingAlert(false);
     
-    useEffect(() => {
-        if (searchParams.get('signedout') === "true") {
-            Cookies.remove('token')
+    useEffect(() => {        
+        if (searchParams.get('signedout') === "true") {            
+            Cookies.remove('bearer');
+            Cookies.remove('refresh');
         }
     })
     

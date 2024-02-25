@@ -12,9 +12,11 @@ const Layout = () => {
     useEffect(() => {
         if (
             (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 
-            && (Cookies.get('bearer') !== undefined)
-        ) {
-                navigate('/inventory')
+            && Cookies.get('bearer') !== undefined
+            && searchParams.get("error") !== "true"
+        )
+        {
+            navigate('/inventory')
         }
     }, [])
 
@@ -32,6 +34,14 @@ const Layout = () => {
     else if ((location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register") 
             && (Cookies.get('bearer') === undefined)) {
         // if user is at /, /login or /register and they DON'T have a token
+        return (
+            <Outlet />
+        )
+    }
+    else if ((location.pathname === "/" || location.pathname === "/login") 
+            && (Cookies.get('bearer') !== undefined)
+            && searchParams.get("error") === "true"
+    ) {
         return (
             <Outlet />
         )

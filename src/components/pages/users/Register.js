@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ApiRegister } from "../../../services/api";import { useEffect, useState } from "react";
-import { Input, FormFeedback, Button, Alert } from 'reactstrap'
+import { ApiRegister } from "../../../services/api";
+import { Input, FormFeedback, Button, Alert } from 'reactstrap';
+import Cookies from "js-cookie";
 
 const Register = () => {    
     // hooks
@@ -80,6 +82,12 @@ const Register = () => {
                 setIsValidating(false);
             })
     }
+
+    useEffect(() => {
+        if (Cookies.get('bearer') !== undefined) {
+            navigate('/inventory');
+        }
+    }, [])
     
     return (        
         <div className="authentication-bg">
